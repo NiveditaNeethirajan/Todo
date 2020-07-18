@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.content.IntentFilter;
 
 import com.example.todoapplication.common.TodoConstants;
 import com.example.todoapplication.common.TodoPreferences;
+import com.example.todoapplication.receivers.InterentConnectionBroadcastReceiver;
 import com.example.todoapplication.service.ApiManager;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -34,6 +36,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TodoPreferences.initialize(this);
+        //register network change receivers
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.setPriority(100);
+        registerReceiver(new InterentConnectionBroadcastReceiver(), intentFilter);
+
         usernameEditText =  findViewById(R.id.username);
         passwordEditText =  findViewById(R.id.password);
         loginButton = findViewById(R.id.login);
